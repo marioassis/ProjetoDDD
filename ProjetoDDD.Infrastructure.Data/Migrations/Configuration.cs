@@ -17,7 +17,7 @@ namespace ProjetoDDD.Infrastructure.Data.Migrations
             if (context.PerfilUsuario.Where(x => x.NomPerfil == "Administrador Master").Count() == 0)
                 UserDatabaseInitializer.GetPerfisUsuarios().ForEach(c => context.PerfilUsuario.Add(c));
 
-            // Delete all stored procs, views
+            // Delete all stored procs, views .
             foreach (var file in Directory.GetFiles(Path.Combine(AppDomain.CurrentDomain.BaseDirectory.Replace("bin\\Debug", ""), "Sql\\Seed"), "*.sql"))
             {
                 context.Database.ExecuteSqlCommand(File.ReadAllText(file), new object[0]);
