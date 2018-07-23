@@ -28,17 +28,19 @@ namespace ProjetoDDD.Infrastructure.Data.Context
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            //Removendo as convenções automáticas do Entity Framework
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
             modelBuilder.Conventions.Remove<ManyToManyCascadeDeleteConvention>();
 
+            //Setando as configurações base para criação de tabelas no Banco de Dados
             modelBuilder.Properties().Where(p => p.Name == p.ReflectedType.Name + "Id").Configure(p => p.IsKey());
             modelBuilder.Properties<string>().Configure(p => p.HasColumnType("varchar"));
             modelBuilder.Properties<string>().Configure(p => p.HasMaxLength(100));
-
             modelBuilder.Properties<string>().Where(p => p.Name.Contains("Descricao")).Configure(p => p.HasMaxLength(400));
             modelBuilder.Properties<string>().Where(p => p.Name.Contains("UF")).Configure(p => p.HasMaxLength(2));
 
+            //Carregado as configurações especializadas de cada entidade
             modelBuilder.Configurations.Add(new ModulosAcessoMap());
             modelBuilder.Configurations.Add(new PerfilUsuarioMap());
             modelBuilder.Configurations.Add(new UsuarioMap());
